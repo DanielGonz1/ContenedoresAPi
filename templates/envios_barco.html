@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>Envíos del Barco {% if tipo == 'get' %}B-{% endif %}{{ barco['matricula'] }}</h2>
+    <p class="{% if tipo == 'get' %}d-none{% endif %}">Total de pedidos: {{ total_pedidos }}</p>
+    
+    <form action="" method="POST">
+        <div class="mb-3">
+            <label for="barcos" class="form-label">Selecciona un barco para ver los envíos</label>
+            <div class="input-group w-100">
+                <select class="form-select flex-grow-1" name="barcos" id="barcos" onchange="this.form.submit()">
+                    <option selected disabled>Selecciona...</option>
+                    {% for barco in barcos %}
+                    <option value="{{ barco.id }}">B-{{ barco.matricula }}</option>
+                    {% endfor %}
+                </select>
+                <button class="btn btn-primary d-none" type="submit">
+                    <i class="fas fa-search fa-sm"></i>
+                </button>
+            </div>
+        </div>        
+    </form>
+    
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>No° de Pedido</th>
+                <th>ID Envio</th>
+                <th>Matrícula del Contenedor</th> <!-- Cambiado a matrícula -->
+                <th>Matrícula del Barco</th>
+                <th>Piso</th>
+                <th>Contenido</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for pedido in pedidos %}
+            <tr>
+                <td>{{ pedido.pedido_id }}</td>
+                <td>{{ pedido.envio_id }}</td>
+                <td>M-{{ pedido.contenedor_matricula }}</td> <!-- Mostrar la matrícula del contenedor -->
+                <td>{{ pedido.barco_matricula }}</td>
+                <td>{{ pedido.numero_piso }}</td>
+                <td>{{ pedido.mercancia }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>    
+    
+    <!-- Paginación -->
+    <div class="d-flex justify-content-between align-items-center">
+        <div class="flex-grow-1">
+            {% if page > 1 %}
+                <a href="{{ url_for('envios_por_barco', page=page-1, barco_id=barco_id) }}" class="btn btn-secondary">Anterior</a>
+            {% endif %}
+        </div>
+        
+        <div class="text-center">
+            {% for p in range(1, total_pages + 1) %}
+                <a href="{{ url_for('envios_por_barco', page=p, barco_id=barco_id) }}" class="btn btn-primary {% if p == page %}active{% endif %}">
+                    {{ p }}
+                </a>
+            {% endfor %}
+        </div>
+        
+        <div class="flex-grow-1 text-end">
+            {% if page < total_pages %}
+                <a href="{{ url_for('envios_por_barco', page=page+1, barco_id=barco_id) }}" class="btn btn-secondary">Siguiente</a>
+            {% endif %}
+        </div>
+    </div>
+    
+</div>
+
+{% endblock %}

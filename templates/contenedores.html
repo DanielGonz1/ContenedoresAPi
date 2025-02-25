@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="wrapper container bg-gradient-primary">
+    <br>
+    <h1 class="h3 mb-4 text-white text-center justify-content-center">Contenedores</h1>
+
+    <table class="table table-striped table-info">
+        <thead>
+            <tr>
+                <th>Número de contenedor</th>
+                <th>Tipo</th>
+                <th>Capacidad</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+                </tr>
+        </thead>
+            {% for conte in conte %}
+            <tr>
+                <td>M-{{ conte['numero'] }}</td>
+                <td>{{ conte['tipo'] }}</td>
+                <td>{{ conte['capacidad'] }}</td>
+                <td>{{ conte['estado'] }}</td>
+                <td>
+                    <a href="{{ url_for('edit_cont', conte_id=conte['id']) }}" class="btn btn-sm btn-primary {% if conte['estado'] != 'Disponible' %}disabled-link{% endif %} d-none">Editar</a>
+                    <button class="btn btn-sm btn-danger" onclick="deleteCont({{conte['id']}})" {% if conte['estado'] != 'Disponible' %}disabled{% endif %}>Eliminar</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br>
+</div>
+{% endblock %}

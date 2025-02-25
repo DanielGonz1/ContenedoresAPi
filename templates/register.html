@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <br>
+    <div class="container">
+
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <!-- Nested Row within Card Body -->
+                <div class="row">
+                    <div class="col-lg-3 d-lg-block bg-register-image"></div>
+                    <div class="col-lg-7">
+                        <div class="p-5">
+                            <div class="text-center">
+                                <h1 class="h4 text-gray-900 mb-4">
+                                    {% if action == 'register' %}
+                                    <h1 class="h4 text-gray-900 mb-4">¡Registro de usuarios!</h1>
+                                {% elif action == 'edit' %}
+                                    <h1 class="h4 text-gray-900 mb-4">Edit User: {{ user.username }}</h1>
+                                {% endif %}
+                                </h1>
+                            </div>
+                            <form class="user" method="POST" action="">
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <input type="text" name="firsname" class="form-control form-control-user" id="firsname"
+                                            placeholder="Nombre" onkeyup="generateUsername()"
+                                            value="{{ user.nombre if action == 'edit' else '' }}">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input type="text" name="lastname" class="form-control form-control-user" id="lastname"
+                                            placeholder="Apellido" onkeyup="generateUsername()"
+                                            value="{{ user.apellido if action == 'edit' else '' }}">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-6">
+                                        <input type="email" name="email" class="form-control form-control-user" id="email"
+                                            placeholder="Email" readonly
+                                            value="{{ user.email if action == 'edit' else '' }}">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input type="text" name="username" class="form-control form-control-user" id="username"
+                                            placeholder="Username" readonly
+                                            value="{{ user.username if action == 'edit' else '' }}">
+                                    </div>
+                                </div>
+                                <div class="form-group row {{ 'd-none' if action == 'register' else '' }}">
+                                    <div class="col-sm-12">
+                                        <label for="role">Role</label>
+                                        <select name="role" id="role" class="form-select" aria-label="Default select example">
+                                            <option value="0" {% if user.is_admin == 0 %}selected{% endif %}>User</option>
+                                            <option value="1" {% if user.is_admin == 1 %}selected{% endif %}>Admin</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <input type="password" name="passd" id="passd" class="form-control form-control-user"
+                                            placeholder="Contraseña" onkeyup="checkPasswords()">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input type="password" name="passd2" class="form-control form-control-user"
+                                            id="passd2" placeholder="Repite la contraseña" onkeyup="checkPasswords()">
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-user btn-block {{ 'd-none' if action == 'edit' else '' }}" disabled id="btn-submit" >
+                                        Registrar cuenta
+                                </button>
+                                <button type="submit" class="btn btn-primary btn-user btn-block {{ 'd-none' if action == 'register' else '' }}" id="btn-submit" >
+                                    Guardar cambios
+                                </button>
+                                <hr>
+                                <!--<a href="{{ url_for('login') }}" class="btn btn-google btn-user btn-block">
+                                    <i class="fab fa-google fa-fw"></i> Register with Google
+                                </a>
+                                <a href="{{ url_for('login') }}" class="btn btn-facebook btn-user btn-block">
+                                    <i class="fab fa-facebook-f fa-fw"></i> Register with Facebook
+                                </a>-->
+                            </form>
+                            <div class="text-center">
+                            </div>
+                            <div class="text-center">
+                                <a class="small" href="{{ url_for('users') }}">Regresar</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+
+    </div>
+    <br>
+</div>
+{% endblock %}

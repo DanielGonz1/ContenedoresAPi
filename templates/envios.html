@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid container-md">
+    <!-- Page Heading -->
+    <h1 class="h3 mb-4 text-gray-800">
+        Pedidos
+    </h1>
+    <div class="container-md">
+        <form action="" method="POST">
+            <div class="mb-3">  
+                <label for="puertoO" class="form-label">Puerto de origen</label>
+                <select class="form-select" id="puertoO" name="puertoO" required onchange="actualizarPuertosDestino()">
+                    <option value="" selected disabled>Selecciona un puerto</option>
+                    {% for puerto in puerto %}
+                        <option value="{{ puerto.id }}">{{ puerto.nombre }} ({{ puerto.pais }})</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="mb-3">  
+                <label for="puertoD" class="form-label">Puerto de destino</label>
+                <select class="form-select" id="puertoD" name="puertoD" required>
+                    <option value="" selected disabled>Selecciona un puerto</option>
+                    {% for puerto in puerto %}
+                        <option value="{{ puerto.id }}">{{ puerto.nombre }} ({{ puerto.pais }})</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="mb-3">
+                <label for="barco_id" class="form-label">Barcos listos para salir</label>
+                <select class="form-select" id="barco_id" name="barco_id" required onchange="updateTable(this.value)">
+                    <option value="" selected disabled>Selecciona un barco</option>
+                    {% for barco in barco %}
+                        <option value="{{ barco.id }}">E-{{barco.matricula}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-3 d-none" id="tabla_pedidos">
+                <table class="table table-warning">
+                    <thead>
+                        <th>N. de Pedido</th>
+                        <th>N. de Contenedor</th>
+                        <th>Contenido</th>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mb-3">
+                <label for="fecha_salida">Fecha de salida:</label>
+                <input type="date" id="fecha_salida" name="fecha_salida" class="custom-date-input form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="fecha_llegada">Fecha estimada de llegada:</label>
+                <input type="date" id="fecha_llegada" name="fecha_llegada" class="custom-date-input form-control" required>
+            </div>
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary">Crear pedido</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid container-md">
+    <!-- Page Heading -->
+    <h1 class="h3 mb-4 text-gray-800">
+        Pedidos
+    </h1>
+    <div class="container-md">
+        <form action="{{ url_for('crear_pedido') }}" method="POST">
+            <div class="mb-3">
+                <label for="conte_id" class="form-label">Contenedor</label>
+                <select class="form-select" id="conte_id" name="conte_id" required onchange="fetchPisos(document.getElementById('barco_id').value)">
+                    <option value="" selected disabled>Selecciona un contenedor disponible</option>
+                    {% for conte in conte %}
+                        <option value="{{ conte.id }}">M-{{ conte.numero }} ({{ conte.capacidad }} KG)</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="numero" class="form-label">Tipo de mercancia</label>
+                <select class="form-select" id="merca" name="merca" required>
+                    <option value="">Selecciona un tipo de mercancía</option>
+                    <option value="electronicos">Electrónicos</option>
+                    <option value="automoviles_y_repuestos">Automóviles y Repuestos</option>
+                    <option value="ropa_y_textiles">Ropa y Textiles</option>
+                    <option value="productos_quimicos">Productos Químicos</option>
+                    <option value="alimentos_y_bebidas">Alimentos y Bebidas</option>
+                    <option value="muebles_y_articulos_hogar">Muebles y Artículos de Hogar</option>
+                    <option value="maquinaria_y_equipos_industriales">Maquinaria y Equipos Industriales</option>
+                    <option value="materiales_de_construccion">Materiales de Construcción</option>
+                    <option value="productos_farmaceuticos_y_medicos">Productos Farmacéuticos y Médicos</option>
+                    <option value="libros_y_material_educativo">Libros y Material Educativo</option>
+                </select>
+                
+            </div>
+            <div class="mb-3">
+                <label for="barco_id" class="form-label">Barco</label>
+                <select class="form-select" id="barco_id" name="barco_id" requiered onchange="fetchPisos(this.value)">
+                    <option value="" selected disabled>Selecciona un barco disponible</option>
+                    {% for barco in barco %}
+                        <option value="{{ barco.id }}">E-{{ barco.matricula }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="numero" class="form-label">Numero de piso</label>
+                <select class="form-select" id="piso_id" name="piso_id" required disabled>
+                    <option value="" selected disabled>Selecciona un barco y un contendor primero</option>
+                </select>
+            </div>
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary">Crear pedido</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

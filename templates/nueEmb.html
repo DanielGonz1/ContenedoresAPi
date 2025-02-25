@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid container-md">
+    <!-- Page Heading -->
+    <h1 class="h3 mb-4 text-gray-800">
+        {% if action == 'nuevo' %}
+        ¡Registro de nuevo embarque!
+        {% elif action == 'edit' %}
+        Barco a modificar: E-{{barco.matricula}}
+        {% endif %}
+    </h1>
+    <div class="container-md">
+        <form action="{% if action == 'nuevo' %}{{ url_for('embarques') }}{% else %}{{ url_for('embarques') }}{% endif %}" method="POST">
+            {% if action == 'edit' %}
+            <input type="hidden" name="id" value="{{ barco.id }}">
+            {% endif %}
+
+            <div class="mb-3">
+                <label for="numero" class="form-label">Matricula del Barco</label>
+                <input type="text" class="form-control" id="matricula" name="matricula" value="{{ barco.matricula if action == 'edit' else '' }}" required {% if action == 'edit' %}readonly{% endif %} maxlength="6">
+                <small id="numeroHelp" class="form-text text-muted">Debe tener 6 dígitos.</small>
+                <div id="numero-status"></div>
+            </div>
+            <div class="mb-3">
+                <label for="tipo" class="form-label">Tamaño</label>
+                <select class="form-select" id="tamano" name="tamano" required onchange="actualizarPeso()">
+                    <option value="" disabled {% if action == 'nuevo' %} selected {% endif %}>Selecciona el Tamaño</option>
+                    <option value="Pequeño (General Cargo Ships)" {% if barco.tamano == 'Pequeño (General Cargo Ships)' %} selected {% endif %}>Pequeño (General Cargo Ships)</option>
+                    <option value="Panamax" {% if barco.tamano == 'Panamax' %} selected {% endif %}>Panamax</option>
+                    <option value="Post-Panamax" {% if barco.tamano == 'Post-Panamax' %} selected {% endif %}>Post-Panamax</option>
+                    <option value="Ultra Large Container Vessels" {% if barco.tamano == 'Ultra Large Container Vessels' %} selected {% endif %}>Ultra Large Container Vessels</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="estado" class="form-label">Número de pisos</label>
+                <select class="form-select" id="numero_pisos" name="numero_pisos" required>
+                    <option value="" disabled {% if action == 'nuevo' %} selected {% endif %}>Selecciona el número de pisos</option>
+                    <option value="1" {% if barco.numero_pisos == 1 %} selected {% endif %}>1</option>
+                    <option value="2" {% if barco.numero_pisos == 2 %} selected {% endif %}>2</option>
+                    <option value="3" {% if barco.numero_pisos == 3 %} selected {% endif %}>3</option>
+                    <option value="4" {% if barco.numero_pisos == 4 %} selected {% endif %}>4</option>
+                    <!-- Agrega más opciones según lo que sea necesario -->
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="peso" class="form-label">Capacidad</label>
+                <input type="number" class="form-control" id="capacidad" value="{{ barco.capacidad if action == 'edit' else '' }}" name="capacidad" readonly>
+            </div>
+            <!--
+            <div class="mb-3 {{ 'd-none' if action == 'nuevo' else '' }}">
+                <label for="fecha_salida" class="form-label">Fecha de Salida</label>
+                <input type="date" class="form-control" id="fecha_salida" name="fecha_salida" disabled>
+            </div>
+            <div class="mb-3 {{ 'd-none' if action == 'nuevo' else '' }}">
+                <label for="barco_id" class="form-label">Barco</label>
+                <select class="form-select" id="barco_id" name="barco_id" disabled>
+                    <option value="" disabled selected>Selecciona el barco</option>
+                    Aquí puedes generar dinámicamente las opciones desde tu base de datos
+                    <option value="1">Barco 1</option>
+                    <option value="2">Barco 2</option>
+                </select>
+            </div>
+            <div class="mb-3 {{ 'd-none' if action == 'nuevo' else '' }}">
+                <label for="piso" class="form-label">Piso</label>
+                <input type="number" class="form-control" id="piso" name="piso" disabled>
+            </div>-->
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary">
+                    {% if action == 'nuevo' %}
+                    Agregar barco
+                    {% elif action == 'edit' %}
+                    Guardar cambios
+                    {% endif %}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
